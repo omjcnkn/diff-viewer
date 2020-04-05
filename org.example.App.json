@@ -30,7 +30,7 @@
             "sources" : [
                 {
                     "type" : "git",
-                    "url" : "file:///home/mahmoud/Projects/DiffViewer"
+                    "url" : "https://github.com/MahmoudKhalil/diff-viewer.git"
                 }
             ]
         },
