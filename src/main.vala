@@ -17,14 +17,30 @@
  */
 
 int main (string[] args) {
-	var app = new Gtk.Application ("org.example.App", ApplicationFlags.FLAGS_NONE);
-	app.activate.connect (() => {
-		var win = app.active_window;
-		if (win == null) {
-			win = new Diffviewer.Window (app);
+	File repoFile = File.new_for_path ("../.././");
+	Ggit.init ();
+	
+	if (repoFile != null)
+	{
+		print ("Accessed repo file\n");
+		print (repoFile.get_basename () + "\n");
+		try
+		{
+			Ggit.Repository repo = Ggit.Repository.open (repoFile);
+			if (repo != null)
+			{
+				print ("Repo isn't null\n");
+			}
 		}
-		win.present ();
-	});
+		catch (Error error)
+		{
+			print ("Error thrown\n");
+		}
+	}
+	else
+	{
+		print ("Pffs\n");
+	}
 
-	return app.run (args);
+	return 0;
 }
