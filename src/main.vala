@@ -31,6 +31,11 @@ int main (string[] args) {
 			{
 				print ("Repo isn't null\n");
 			}
+			
+			print ("=== Printing diff between working directory and HEAD===\n");
+			
+			Ggit.Diff diff = new Ggit.Diff.index_to_workdir (repo, null, null);
+			diff.print (Ggit.DiffFormatType.PATCH, MyCallback);
 		}
 		catch (Error error)
 		{
@@ -42,5 +47,11 @@ int main (string[] args) {
 		print ("Pffs\n");
 	}
 
+	return 0;
+}
+
+public int MyCallback (Ggit.DiffDelta delta, Ggit.DiffHunk? hunk, Ggit.DiffLine line)
+{
+	print (line.get_text() + "\n");
 	return 0;
 }
