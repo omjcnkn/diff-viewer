@@ -52,6 +52,10 @@ int main (string[] args) {
 
 public int MyCallback (Ggit.DiffDelta delta, Ggit.DiffHunk? hunk, Ggit.DiffLine line)
 {
-	print (line.get_text() + "\n");
+	if (line.get_origin () != Ggit.DiffLineType.ADDITION)
+	{
+		print ("+:" + line.get_text() + "\n");
+	}
+	
 	return 0;
 }
