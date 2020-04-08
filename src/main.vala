@@ -17,7 +17,7 @@
  */
 
 int main (string[] args) {
-	File repoFile = File.new_for_path ("../.././");
+	File repoFile = File.new_for_path ("../../../testing-repo");
 	Ggit.init ();
 	
 	if (repoFile != null)
@@ -30,12 +30,13 @@ int main (string[] args) {
 			if (repo != null)
 			{
 				print ("Repo isn't null\n");
+				print ("Repo name : %s\n", repo.get_location ().get_basename ());
 			}
 			
 			print ("=== Printing diff between working directory and HEAD===\n");
 			
 			Ggit.Diff diff = new Ggit.Diff.index_to_workdir (repo, null, null);
-			diff.print (Ggit.DiffFormatType.PATCH, MyCallback);
+			diff.print (Ggit.DiffFormatType.PATCH, print_line_callback);
 		}
 		catch (Error error)
 		{
@@ -50,11 +51,17 @@ int main (string[] args) {
 	return 0;
 }
 
-public int MyCallback (Ggit.DiffDelta delta, Ggit.DiffHunk? hunk, Ggit.DiffLine line)
+public int print_line_callback (Ggit.DiffDelta delta, Ggit.DiffHunk? hunk, Ggit.DiffLine line)
 {
-	if (line.get_origin () != Ggit.DiffLineType.ADDITION)
+	if (line.get_origin () == Ggit.DiffLineType.ADDITION)
 	{
-		print ("+:" + line.get_text() + "\n");
+		print ("+ " + line.get_new_lineno ().to_string () + " : ");
+		print (line.get_text () + "\n");
+	}
+	else if (line.get_origin () == Ggit.DiffLineType.DELETION)
+	{
+		print ("- " + line.get_old_lineno ().to_string () + " : ");
+		print (line.get_text () + "\n");
 	}
 	
 	return 0;
